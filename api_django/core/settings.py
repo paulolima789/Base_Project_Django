@@ -223,6 +223,8 @@ SIMPLE_JWT = {
      #'SIGNING_KEY': '',  # A chave secreta usada para assinar o token se quiser separar da propria SECRET_KEY
     'AUTH_HEADER_TYPES': ('Bearer',),  # Tipo do cabeçalho de autorização
 }
+# Configuração do Recaptcha
+RECAPTCHA_SECRET_KEY = 'sua_chave_secreta_do_recaptcha'
 
 
 # Configuração do Channels Redis (caso você use Redis para WebSockets)
