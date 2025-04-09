@@ -10,10 +10,12 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from api.views.auth.token_with_captcha import TokenObtainPairWithCaptchaView
 
 urlpatterns = [
     # Rota para obter o token (login)
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/captcha/', TokenObtainPairWithCaptchaView.as_view(), name='token_obtain_pair'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain'),
     # Rota para renovar o token
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
