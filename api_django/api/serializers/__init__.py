@@ -7,3 +7,7 @@ from .example import (
     ExampleDetailSerializer,
     ExampleDeleteSerializer
 )
+
+from .auth import (
+    TokenObtainPairWithCaptchaSerializer,
+)
