@@ -1,16 +1,16 @@
 from rest_framework.permissions import BasePermission
 
 # Define custom permissions for different user groups
-# example: IsVendas, IsPosVendas, IsAdministrador
+# example: IsUser, IsAdmin, IsExample
 
-class IsExampleVendas(BasePermission):
+class IsExample(BasePermission):
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='Vendas').exists()
+        return request.user.is_superuser or request.user.groups.filter(name='Example').exists()
 
-class IsExamplePosVendas(BasePermission):
+class IsAdmin(BasePermission):
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='Pós-Vendas').exists()
+        return request.user.groups.filter(name='Admin').exists()
 
-class IsExampleAdministrador(BasePermission):
+class IsUser(BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_superuser or request.user.groups.filter(name='Administrador').exists()
+        return request.user.groups.filter(name='User').exists()
