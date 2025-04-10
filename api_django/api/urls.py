@@ -6,6 +6,14 @@ from api.views.example import (
     ExampleUpdateView,
     ExampleDeleteView,
 )
+from api.views.user import (
+    UserListView,
+    UserCreateView,
+    UserDetailView,
+    UserUpdateView,
+    UserDeleteView,
+)
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -25,4 +33,12 @@ urlpatterns = [
     path("examples/<int:pk>/", ExampleDetailView.as_view(), name="example-detail"),
     path("examples/<int:pk>/update/", ExampleUpdateView.as_view(), name="example-update"),
     path("examples/<int:pk>/delete/", ExampleDeleteView.as_view(), name="example-delete"),
+
+    # Users
+    path("users/", UserListView.as_view(), name="user-list"),
+    path("users/create/", UserCreateView.as_view(), name="user-create"),
+    path("users/<int:pk>/", UserDetailView.as_view(), name="user-detail"),
+    path("users/<int:pk>/update/", UserUpdateView.as_view(), name="user-update"),
+    path("users/<int:pk>/delete/", UserDeleteView.as_view(), name="user-delete"),
+
 ]
