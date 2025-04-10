@@ -8,6 +8,14 @@ from .example import (
     ExampleDeleteSerializer
 )
 
+from .user import (
+    UserCreateSerializer,
+    UserUpdateSerializer,
+    UserListSerializer,
+    UserDetailSerializer,
+    UserDeleteSerializer
+)
+
 from .auth import (
     TokenObtainPairWithCaptchaSerializer,
 )
