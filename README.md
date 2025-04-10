@@ -5,14 +5,12 @@
 ### Criar
 ```bash
 py -m venv .venv
-
 python3 -m venv .venv
 ```
 
 ### Ativar (no mesmo diretório)
 ```bash
 .venv/Scripts/activate
-
 source .venv/bin/activate
 ```
 
