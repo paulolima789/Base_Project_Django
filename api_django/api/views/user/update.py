@@ -4,7 +4,7 @@ from api.serializers import UserUpdateSerializer
 
 # autenticated
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsExampleAdministrador, IsExamplePosVendas, IsExampleVendas
+from api.permissions.grupos import IsAdmin, IsUser, IsExample
 
 # from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.utils import swagger_auto_schema
@@ -13,8 +13,8 @@ class UserUpdateView(UpdateAPIView):
     """Atualiza um registro existente de User."""
     queryset = CustomUser.objects.all()
     serializer_class = UserUpdateSerializer
-    permission_classes = [IsAuthenticated, IsExampleVendas, IsExamplePosVendas, IsExampleAdministrador]
-
+    permission_classes = [IsAuthenticated, IsAdmin | IsUser | IsExample]
+    
     @swagger_auto_schema(
         operation_description="Atualiza um registro de User.",
         responses={200: UserUpdateSerializer()},

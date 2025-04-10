@@ -4,7 +4,7 @@ from api.serializers import UserDeleteSerializer
 
 # autenticated
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsExampleAdministrador, IsExamplePosVendas, IsExampleVendas
+from api.permissions.grupos import IsAdmin, IsUser, IsExample
 
 # from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.utils import swagger_auto_schema
@@ -13,7 +13,7 @@ class UserDeleteView(DestroyAPIView):
     """Remove um registro específico de User."""
     queryset = CustomUser.objects.all()
     serializer_class = UserDeleteSerializer
-    permission_classes = [IsAuthenticated, IsExampleVendas, IsExamplePosVendas, IsExampleAdministrador]
+    permission_classes = [IsAuthenticated, IsAdmin | IsUser | IsExample]
 
     @swagger_auto_schema(
         operation_description="Remove um registro de User.",

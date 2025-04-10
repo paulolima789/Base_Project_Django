@@ -6,7 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 
 # autenticated
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsExampleAdministrador, IsExamplePosVendas, IsExampleVendas
+from api.permissions.grupos import IsAdmin, IsUser, IsExample
 
 # from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.utils import swagger_auto_schema
@@ -21,7 +21,7 @@ class UserListView(ListAPIView):
     """Lista todos os registros de User."""
     queryset = CustomUser.objects.all()
     serializer_class = UserListSerializer
-    permission_classes = [IsAuthenticated, IsExampleVendas, IsExamplePosVendas, IsExampleAdministrador]
+    permission_classes = [IsAuthenticated, IsAdmin | IsUser | IsExample]
     pagination_class = CustomPagination  # 👈 Aqui tá a mágica
 
     @swagger_auto_schema(
