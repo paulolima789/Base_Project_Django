@@ -16,6 +16,14 @@ from .user import (
     UserDeleteSerializer
 )
 
+from .group import (
+    GroupCreateSerializer,
+    GroupUpdateSerializer,
+    GroupListSerializer,
+    GroupDetailSerializer,
+    GroupDeleteSerializer
+)
+
 from .auth import (
     TokenObtainPairWithCaptchaSerializer,
 )
