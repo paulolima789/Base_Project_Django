@@ -226,7 +226,9 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),  # Tipo do cabeçalho de autorização
 }
 # Configuração do Recaptcha
-RECAPTCHA_SECRET_KEY = 'sua_chave_secreta_do_recaptcha'
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "seu_key_aqui")
+# Configuração do Google OAuth2
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "seu_id_aqui")
 
 
 # Configuração do Channels Redis (caso você use Redis para WebSockets)
