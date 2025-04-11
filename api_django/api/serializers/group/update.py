@@ -1,0 +1,9 @@
+# api/serializers/group/update.py
+
+from rest_framework import serializers
+from django.contrib.auth.models import Group
+
+class GroupUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = '__all__'
