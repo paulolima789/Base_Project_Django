@@ -2,6 +2,7 @@ asgiref==3.8.1
 attrs==25.3.0
 autobahn==24.4.2
 Automat==24.8.1
+cachetools==5.5.2
 certifi==2025.1.31
 cffi==1.17.1
 channels==4.2.2
@@ -16,6 +17,12 @@ djangorestframework_simplejwt==5.5.0
 dotenv==0.9.9
 drf-spectacular==0.28.0
 drf-yasg==1.21.10
+google-api-core==2.25.1
+google-api-python-client==2.179.0
+google-auth==2.40.3
+google-auth-httplib2==0.2.0
+googleapis-common-protos==1.70.0
+httplib2==0.22.0
 hyperlink==21.0.0
 idna==3.10
 incremental==24.7.2
@@ -25,12 +32,15 @@ jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
 packaging==24.2
 pluggy==1.5.0
+proto-plus==1.26.1
+protobuf==6.32.0
 psycopg2-binary==2.9.10
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pycparser==2.22
 PyJWT==2.9.0
 pyOpenSSL==25.0.0
+pyparsing==3.2.3
 pytest==8.3.5
 pytest-django==4.11.1
 python-dotenv==1.1.0
@@ -41,6 +51,7 @@ referencing==0.36.2
 requests==2.32.3
 rest-framework-simplejwt==0.0.2
 rpds-py==0.24.0
+rsa==4.9.1
 service-identity==24.2.0
 setuptools==78.1.0
 sqlparse==0.5.3
