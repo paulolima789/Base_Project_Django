@@ -40,7 +40,6 @@ ALLOWED_HOSTS = [
 
 ## CORS
 # libera o acesso total para todos os domínios
-CORS_ORIGIN_ALLOW_ALL = False
 
 # libera o acesso para os domínios listados
 #CORS_ALLOW_ORIGIN = [
@@ -48,9 +47,18 @@ CORS_ORIGIN_ALLOW_ALL = False
 #    'localhost',
 #    'ws://localhost:8000'
 #]
-CORS_ALLOWED_ORIGINS = [
-    h.strip() for h in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if h.strip()
-]
+
+# CORS
+if os.getenv("CORS_ALLOW_ALL", "false").lower() == "true":
+    # libera todas as origens (modo dev)
+    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOWED_ORIGINS = []
+else:
+    # libera apenas os domínios listados no .env
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = [
+        h.strip() for h in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if h.strip()
+    ]
 
 # Application definition
 
