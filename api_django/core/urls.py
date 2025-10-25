@@ -1,34 +1,24 @@
-'''
-from django.contrib import admin
-from django.urls import path, include
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('auth/', include('accounts.urls')),
-    path('api/', include('api.urls')),
-]
-'''
-from django.contrib import admin
-from django.urls import path, include
-
+import os
 from django.conf import settings
-from django.conf.urls.static import static
-# Documentação da API
+from django.contrib import admin
+from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.conf.urls.static import static
+from django.conf import settings
+
+API_PUBLIC_URL = os.getenv('API_PUBLIC_URL', getattr(settings, 'API_PUBLIC_URL', None))
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="API",
-      default_version='v1',
-      description="Documentação da API",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="suporte@prdl.shop"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Base_Project_Django API",
+        default_version='v1',
+        description="API docs",
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+    url=API_PUBLIC_URL
 )
 
 urlpatterns = [

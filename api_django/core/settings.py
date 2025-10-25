@@ -4,6 +4,32 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from corsheaders.defaults import default_headers
+from datetime import timedelta
+
+# Base dir — usado para localizar dotenv_files/.env antes de chamar os.getenv
+BASE_DIR = Path(__file__).resolve().parent.parent
+DOTENV_PATH = BASE_DIR.parent / "dotenv_files" / ".env"
+if DOTENV_PATH.exists():
+    load_dotenv(DOTENV_PATH)
+else:
+    # fallback para carregar um .env no cwd, se existir
+    load_dotenv()
+
+# hosts / domínios
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# CORS / CSRF
+CORS_ALLOWED_ORIGINS = [x for x in os.getenv('CORS_ALLOWED_ORIGINS', ','.join(ALLOWED_HOSTS)).split(',') if x]
+CORS_ALLOW_HEADERS = list(default_headers) + ['X-CSRFToken']
+CSRF_TRUSTED_ORIGINS = [o for o in os.getenv('CSRF_TRUSTED_ORIGINS', ','.join(CORS_ALLOWED_ORIGINS)).split(',') if o]
+
+# caso queira permitir tudo em dev (remova em prod)
+if os.getenv('CORS_ALLOW_ALL', 'False').lower() in ('1','true','yes'):
+    CORS_ALLOW_ALL_ORIGINS = True
+
+# se o app estiver atrás de proxy TLS (nginx) — faz request.is_secure() funcionar
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +71,7 @@ INSTALLED_APPS = [
     'drf_yasg',  # << adiciona aqui para que os templates do drf-yasg sejam encontrados
     'accounts',  # App para custom user model
     'api',  # Add your app here
+    'rest_framework_simplejwt.token_blacklist',  # habilita blacklist de refresh tokens
 ]
 
 MIDDLEWARE = [
@@ -184,4 +211,16 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,
     'DOC_EXPANSION': 'none',
     'DEFAULT_MODEL_RENDERER': 'rest_framework.renderers.BrowsableAPIRenderer',
+}
+
+# Nome do projeto usado em QR/issuer etc (lido do .env)
+PROJECT_NAME = os.getenv('PROJECT_NAME', os.getenv('APP_NAME', 'Base_Project'))
+
+# Simple JWT configurável via .env
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=int(os.getenv('JWT_ACCESS_TOKEN_LIFETIME_DAYS', '60'))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.getenv('JWT_REFRESH_TOKEN_LIFETIME_DAYS', '90'))),
+    'ROTATE_REFRESH_TOKENS': os.getenv('JWT_ROTATE_REFRESH_TOKENS', 'False').lower() in ('1','true','yes'),
+    'BLACKLIST_AFTER_ROTATION': os.getenv('JWT_BLACKLIST_AFTER_ROTATION', 'True').lower() in ('1','true','yes'),
+    'AUTH_HEADER_TYPES': tuple(os.getenv('JWT_AUTH_HEADER_TYPES', 'Bearer').split(',')),
 }

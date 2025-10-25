@@ -2,10 +2,7 @@ from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import SocialAccount
-
 User = get_user_model()
-
 
 class EmailTokenObtainPairSerializer(serializers.Serializer):
     email = serializers.EmailField(write_only=True, required=True)
@@ -20,8 +17,6 @@ class EmailTokenObtainPairSerializer(serializers.Serializer):
         if not email or not password:
             raise serializers.ValidationError("email and password are required")
 
-        # authenticate espera 'username' param; para CustomUser com USERNAME_FIELD='email',
-        # passamos o email como username
         user = authenticate(request=self.context.get("request"), username=email, password=password)
         if user is None:
             raise serializers.ValidationError("Credenciais inválidas")
@@ -30,7 +25,7 @@ class EmailTokenObtainPairSerializer(serializers.Serializer):
 
         refresh = RefreshToken.for_user(user)
         access = str(refresh.access_token)
-        return {
+        data = {
             "refresh": str(refresh),
             "access": access,
             "user": {
@@ -39,15 +34,4 @@ class EmailTokenObtainPairSerializer(serializers.Serializer):
                 "name": getattr(user, "name", None),
             }
         }
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'name', 'is_social_account')
-
-
-class SocialAccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SocialAccount
-        fields = '__all__'
+        return data
