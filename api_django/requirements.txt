@@ -61,4 +61,7 @@ typing_extensions>=4.13.1
 uritemplate>=4.1.1
 urllib3>=2.5.0
 zope.interface>=7.2
+pyotp>=2.8.0
+qrcode>=7.3
+Pillow>=10.0.0
 whitenoise

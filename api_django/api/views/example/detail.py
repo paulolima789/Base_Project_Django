@@ -4,7 +4,7 @@ from api.serializers import ExampleDetailSerializer
 
 # autenticated
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsAdmin, IsUser, IsExample
+from accounts.permissions.groups import IsAdmin, IsUser, IsExample
 # from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.utils import swagger_auto_schema
 
@@ -15,6 +15,7 @@ class ExampleDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, IsAdmin | IsUser | IsExample]
 
     @swagger_auto_schema(
+        tags=["Examples"],
         operation_description="Recupera os detalhes de um registro de Example.",
         responses={200: ExampleDetailSerializer()},
         operation_id="example_detail",

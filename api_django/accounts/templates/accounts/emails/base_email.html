@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <body style="font-family: Arial; background-color: #f6f6f6; padding: 20px;">
+    <div style="max-width: 600px; margin: auto; background: white; border-radius: 8px; padding: 20px;">
+      <h2 style="color: #4CAF50;">{{ subject }}</h2>
+      <div>
+        {% block content %}{% endblock %}
+      </div>
+      <hr>
+      <p style="font-size: 12px; color: gray;">© {{ year }} - {{ app_name }}</p>
+    </div>
+  </body>
+</html>

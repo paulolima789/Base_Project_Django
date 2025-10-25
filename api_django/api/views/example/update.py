@@ -4,7 +4,7 @@ from api.serializers import ExampleUpdateSerializer
 
 # autenticated
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsAdmin, IsUser, IsExample
+from accounts.permissions.groups import IsAdmin, IsUser, IsExample
 
 # from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.utils import swagger_auto_schema
@@ -16,6 +16,7 @@ class ExampleUpdateView(UpdateAPIView):
     permission_classes = [IsAuthenticated, IsAdmin | IsUser | IsExample]
 
     @swagger_auto_schema(
+        tags=["Examples"],
         operation_description="Atualiza um registro de Example.",
         responses={200: ExampleUpdateSerializer()},
         operation_id="example_update",
@@ -24,6 +25,7 @@ class ExampleUpdateView(UpdateAPIView):
         return super().put(request, *args, **kwargs)
 
     @swagger_auto_schema(
+        tags=["Examples"],
         operation_description="Atualiza parcialmente um registro de Example.",
         responses={200: ExampleUpdateSerializer()},
         operation_id="example_update_partial",

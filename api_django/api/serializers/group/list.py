@@ -6,4 +6,4 @@ from django.contrib.auth.models import Group
 class GroupListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = '__all__'
+        fields = ('id', 'name')  # evite listar todas as permissões por padrão

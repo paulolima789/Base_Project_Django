@@ -6,7 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 
 # autenticated
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsAdmin, IsUser, IsExample
+from accounts.permissions.groups import IsAdmin, IsUser, IsExample
 
 # from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.utils import swagger_auto_schema
@@ -25,6 +25,7 @@ class ExampleListView(ListAPIView):
     pagination_class = CustomPagination  # 👈 Aqui tá a mágica
 
     @swagger_auto_schema(
+        tags=["Examples"],
         operation_description="Lista todos os registros de Example.",
         responses={200: ExampleListSerializer(many=True)},
         operation_id="example_list",

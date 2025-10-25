@@ -4,7 +4,7 @@ from api.serializers import ExampleCreateSerializer
 
 # autenticated
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsAdmin, IsUser, IsExample
+from accounts.permissions.groups import IsAdmin, IsUser, IsExample
 
 # from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.utils import swagger_auto_schema
@@ -15,6 +15,7 @@ class ExampleCreateView(CreateAPIView):
     permission_classes = [IsAuthenticated, IsAdmin | IsUser | IsExample]
 
     @swagger_auto_schema(
+        tags=["Examples"],
         operation_description="Cria um novo exemplo.",
         responses={201: ExampleCreateSerializer()},
         operation_id="examples_create",

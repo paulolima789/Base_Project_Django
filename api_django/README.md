@@ -1,6 +1,16 @@
-# Título do Projeto
+# Base_Project_Django
 
-Este projeto é uma aplicação Django que utiliza Docker para conteinerização e PostgreSQL como banco de dados. Inclui uma API RESTful e foi projetado para ser facilmente implantável e de fácil manutenção.
+Projeto Django com API REST, PostgreSQL e Docker, preparado para desenvolvimento com MailHog, documentação (Swagger) e app de autenticação reutilizável (`accounts`).
+
+Links rápidos
+- Docs do projeto: ./docs/README.md
+- README do app accounts: ./accounts/README.md
+- Como contribuir: ./CONTRIBUTING.md
+
+Resumo
+- API prefixada em `/api/`
+- Documentação interativa: `/swagger/` ou `/documentation/` (conforme configuração)
+- Rodar em dev: `make run-dev` (subirá psql, redis, mailhog e iniciará app local)
 
 ## Sumário
 

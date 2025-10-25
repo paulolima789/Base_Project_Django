@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.auth.google_login import GoogleLoginView
+
 from api.views.example import (
     ExampleListView,
     ExampleCreateView,
@@ -21,20 +21,8 @@ from api.views.group import (
     GroupUpdateView,
     GroupDeleteView,
 )
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-from api.views.auth.token_with_captcha import TokenObtainPairWithCaptchaView
 
 urlpatterns = [
-    # Rota para obter o token (login)
-    path('token/captcha/', TokenObtainPairWithCaptchaView.as_view(), name='token_obtain_pair'),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain'),
-    path('token/google/', GoogleLoginView.as_view(), name='google-login'),
-    # Rota para renovar o token
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
     # Exemplos de CRUD
     path("examples/", ExampleListView.as_view(), name="example-list"),
     path("examples/create/", ExampleCreateView.as_view(), name="example-create"),
@@ -49,10 +37,10 @@ urlpatterns = [
     path("users/<int:pk>/update/", UserUpdateView.as_view(), name="user-update"),
     path("users/<int:pk>/delete/", UserDeleteView.as_view(), name="user-delete"),
 
-    # Groups
+    # Groups (paths distintos para evitar sobrescrita)
     path("groups/", GroupListView.as_view(), name="group-list"),
-    path("groups/", GroupCreateView.as_view(), name="group-create"),
+    path("groups/create/", GroupCreateView.as_view(), name="group-create"),
     path("groups/<int:pk>/", GroupDetailView.as_view(), name="group-detail"),
-    path("groups/<int:pk>/", GroupUpdateView.as_view(), name="group-update"),
-    path("groups/<int:pk>/", GroupDeleteView.as_view(), name="group-delete"),
+    path("groups/<int:pk>/update/", GroupUpdateView.as_view(), name="group-update"),
+    path("groups/<int:pk>/delete/", GroupDeleteView.as_view(), name="group-delete"),
 ]

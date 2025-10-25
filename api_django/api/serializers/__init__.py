@@ -23,7 +23,3 @@ from .group import (
     GroupDetailSerializer,
     GroupDeleteSerializer
 )
-
-from .auth import (
-    TokenObtainPairWithCaptchaSerializer,
-)

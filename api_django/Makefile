@@ -35,8 +35,8 @@ venv:
 
 # run-dev: sobe apenas psql e redis via docker-compose e roda Django localmente (fora do docker)
 run-dev: venv
-	@echo "🚀 Subindo PostgreSQL e Redis via Docker Compose..."
-	$(DC) up -d psql redis
+	@echo "🚀 Subindo PostgreSQL, Redis e MailHog via Docker Compose..."
+	$(DC) up -d psql redis mailhog
 
 	@echo "⏳ Aguardando PostgreSQL iniciar..."
 	@sleep 5
@@ -45,9 +45,10 @@ run-dev: venv
 	@set -o allexport; \
 	if [ -f $(ENV_FILE) ]; then . $(ENV_FILE); fi; \
 	set +o allexport; \
+	$(MANAGE) makemigrations accounts --noinput; \
 	$(MANAGE) makemigrations --noinput; \
 	$(MANAGE) migrate --noinput; \
-	$(MANAGE) collectstatic --noinput
+	$(MANAGE) collectstatic --noinput; \
 	$(MANAGE) seed
 
 	@echo "🌐 Iniciando Daphne localmente na porta $(API_PORT)... (Ctrl+C para parar)"
@@ -82,11 +83,31 @@ docker-stop:
 	@echo "Parando containers (docker compose down)..."
 	$(DC) down
 
+# Remove apenas containers e volumes (não remove imagens)
+docker-reset:
+	@echo "Resetando containers e volumes (apenas containers + volumes)..."
+	# para e remove containers do compose e volumes declarados por ele
+	$(DC) down --volumes --remove-orphans || true
+	@echo "Removendo volumes nomeados do projeto (prefixo: api_django_) se existirem..."
+	- docker volume ls -q | grep 'api_django_' | xargs -r docker volume rm || true
+	@echo "Removendo volumes órfãos (prune)..."
+	- docker volume prune -f || true
+	@echo "Concluído: containers e volumes removidos."
+
 # Para parar e limpar volumes locais, imagens construídas e containers órfãos
 docker-clean:
 	@echo "Parando e limpando (volumes, todas as imagens locais do compose, órfãos)..."
-	$(DC) down --volumes --rmi all --remove-orphans
+	$(DC) down --volumes --rmi all --remove-orphans || true
+	@echo "Removendo volumes nomeados do projeto (prefixo: api_django_) se existirem..."
+	- docker volume ls -q | grep 'api_django_' | xargs -r docker volume rm || true
+	@echo "Removendo volumes órfãos e prune geral (confirmado)..."
+	- docker volume prune -f || true
 	@echo "Removendo imagens dangling e cache de build..."
-	-docker image prune -f
-	-docker builder prune -af
+	- docker image prune -f || true
+	@echo "Removendo cache do builder (docker builder prune)..."
+	- docker builder prune -af || true
+	@echo "Removendo cache do buildx (se disponível)..."
+	- docker buildx prune -a -f || true
+	@echo "Opcional: limpeza completa do sistema (inclui volumes) - habilite se quiser apagar tudo)"
+	# - docker system prune -af --volumes || true
 	@echo "Pronto."

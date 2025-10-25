@@ -1,1 +1,0 @@
-from api.serializers.auth.authSerializers import TokenObtainPairWithCaptchaSerializer

@@ -5,4 +5,5 @@ from api.models import Example
 class ExampleDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Example
-        fields = '__all__'  # apenas para documentação, mas não será usado
+        fields = ('id', 'name')  # apenas para resposta/documentação
+        read_only_fields = ('id',)

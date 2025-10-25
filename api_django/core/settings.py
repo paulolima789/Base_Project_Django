@@ -11,7 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Carrega .env localizado na raiz do repositório: ../dotenv_files/.env
 DOTENV_PATH = BASE_DIR.parent / "dotenv_files" / ".env"
 if DOTENV_PATH.exists():
-    load_dotenv(dotenv_path=DOTENV_PATH)
+    # carrega variáveis de ambiente do arquivo .env (não usar `source` no shell)
+    load_dotenv(DOTENV_PATH)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'drf_yasg',  # << adiciona aqui para que os templates do drf-yasg sejam encontrados
+    'accounts',  # App para custom user model
     'api',  # Add your app here
 ]
 
@@ -121,7 +124,7 @@ STATIC_ROOT = os.getenv('STATIC_ROOT', str(BASE_DIR / 'staticfiles'))
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'api.CustomUser'  # Substitua 'api' pelo nome do seu aplicativo, se diferente
+AUTH_USER_MODEL = 'accounts.User'  # <--- substitua 'User' pelo nome real da classe encontrada
 
 # Configurações do Django Allauth
 ACCOUNT_EMAIL_REQUIRED = True
@@ -130,18 +133,21 @@ ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 LOGIN_REDIRECT_URL = 'home'  # Substitua pela URL da sua página inicial após o login
 LOGOUT_REDIRECT_URL = 'home'  # Substitua pela URL da sua página inicial após o logout
 
-# Configurações de envio de e-mail (exemplo usando console para desenvolvimento)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'webmaster@localhost'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = False
-EMAIL_TIMEOUT = 5
+# Configurações de envio de e-mail (ler do .env se presente)
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'no-reply@example.com')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'localhost')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', os.getenv('EMAIL_PORT', 1025)))
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'False').lower() in ('1', 'true', 'yes', 'on')
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() in ('1', 'true', 'yes', 'on')
+EMAIL_TIMEOUT = int(os.getenv('EMAIL_TIMEOUT', 5))
 
-# Configurações do Django Rest Framework
+# Django REST Framework - adicionar JWT se usar Simple JWT
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
@@ -161,3 +167,21 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 # Força redirect para URL com '/' se faltar
 APPEND_SLASH = True
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '')
+RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY', '')
+
+# Documentation Swagger e JWT 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT token. Ex: **Bearer &lt;seu_token&gt;**',
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'DOC_EXPANSION': 'none',
+    'DEFAULT_MODEL_RENDERER': 'rest_framework.renderers.BrowsableAPIRenderer',
+}

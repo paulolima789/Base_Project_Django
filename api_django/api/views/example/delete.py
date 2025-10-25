@@ -4,7 +4,7 @@ from api.serializers import ExampleDeleteSerializer
 
 # autenticated
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsAdmin, IsUser, IsExample
+from accounts.permissions.groups import IsAdmin, IsUser, IsExample
 
 # from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.utils import swagger_auto_schema
@@ -16,6 +16,7 @@ class ExampleDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated, IsAdmin | IsUser | IsExample]
 
     @swagger_auto_schema(
+        tags=["Examples"],
         operation_description="Remove um registro de Example.",
         responses={204: "No Content"},
         operation_id="example_delete",

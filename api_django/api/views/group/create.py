@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from api.serializers.group import GroupCreateSerializer
 
 from rest_framework.permissions import IsAuthenticated
-from api.permissions.grupos import IsAdmin, IsUser, IsExample  # ou outra lógica de permissão
+from accounts.permissions.groups import IsAdmin, IsUser, IsExample  # ou outra lógica de permissão
 
 from drf_yasg.utils import swagger_auto_schema
 
@@ -13,6 +13,7 @@ class GroupCreateView(CreateAPIView):
     permission_classes = [IsAuthenticated, IsAdmin | IsUser | IsExample]
 
     @swagger_auto_schema(
+        tags=["Groups"],
         operation_description="Cria um novo grupo.",
         responses={201: GroupCreateSerializer()},
         operation_id="group_create",

@@ -1,9 +1,13 @@
 # api/serializers/User/detail.py
 
 from rest_framework import serializers
-from api.models import CustomUser
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+USERNAME_FIELD = User.USERNAME_FIELD
 
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
-        fields = '__all__'  # ou lista de campos completa
+        model = User
+        # campos existentes no model User
+        fields = ('id', USERNAME_FIELD, 'name', 'is_active', 'is_staff')
