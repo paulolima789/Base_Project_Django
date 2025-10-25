@@ -1,0 +1,51 @@
+services:
+  django:
+    container_name: django
+    build: ./api_django
+    env_file: ../dotenv_files/.env
+    environment:
+      - STATIC_ROOT=/data/web/staticfiles
+    expose:
+      - "${API_PORT:-8000}"
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_volume:/data/web/staticfiles
+    restart: unless-stopped
+    networks:
+      - backend
+    depends_on:
+      - psql
+      - redis
+
+  psql:
+    container_name: psql
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-aplication_db}
+      - POSTGRES_USER=${POSTGRES_USER:-aplication_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-aplication_password}
+    volumes:
+      - database_volume:/var/lib/postgresql/data/
+    env_file:
+      - ../dotenv_files/.env
+    networks:
+      - backend
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+volumes:
+  static_volume:
+  database_volume:
+
+networks:
+  backend:
+  frontend:
