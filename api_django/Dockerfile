@@ -10,7 +10,7 @@ ENV DJANGO_SETTINGS_MODULE=core.settings
 COPY . .
 
 RUN mkdir -p /data/web/staticfiles
-RUN mv /app/favicon.ico /data/web/staticfiles/favicon.ico
+# RUN mv /app/favicon.ico /data/web/staticfiles/favicon.ico
 
 RUN python -m venv /venv
 RUN apt-get update && \

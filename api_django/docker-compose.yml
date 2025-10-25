@@ -1,7 +1,7 @@
 services:
   django:
     container_name: django
-    build: ./api_django
+    build: .
     env_file: ../dotenv_files/.env
     environment:
       - STATIC_ROOT=/data/web/staticfiles
