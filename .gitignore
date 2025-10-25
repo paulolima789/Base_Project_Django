@@ -7,12 +7,13 @@ __pycache__/
 *.so
 
 # files
-/API-Django/static/
-/API-Django/media/
-/API-Django/project/local_settings.py
+/api_django/static/*
+/api_django/media/*
+/api_django/project/local_settings.py
 gunicorn-error.log
 __localcode
 /data/
+/api_django/staticfiles/*
 
 # Distribution / packaging
 .Python
