@@ -149,7 +149,3 @@ screen -ls
 ```bash
 exit
 ```
-
----
-
-> 🧾 **Dica**: Mantenha este `README.md` atualizado conforme o projeto evolui!
