@@ -101,17 +101,16 @@ docker-deps-up:
 	@echo "🚀 Subindo PostgreSQL, Redis e MailHog via Docker Compose..."
 	$(DC) up -d psql redis mailhog
 
+	# O '@' SÓ VAI AQUI, no início de todo o bloco de script
 	@echo "📦 Carregando variáveis de ambiente para verificação do DB..."
 	@set -o allexport; \
 	if [ -f $(ENV_FILE) ]; then . $(ENV_FILE); fi; \
 	set +o allexport; \
 	\
-	@echo "⏳ Aguardando PostgreSQL ficar pronto (verificação: pg_isready)..."; \
-	@count=0; \
-	# Usamos $${POSTGRES_USER} para que o 'make' passe $$POSTGRES_USER para o shell, 
-	# que então expande para o valor da variável de ambiente (ex: 'postgres')
+	echo "⏳ Aguardando PostgreSQL ficar pronto (verificação: pg_isready)..."; \
+	count=0; \
 	while ! $(DC) exec -T psql pg_isready -U $${POSTGRES_USER} -h psql -q 2>/dev/null; do \
-		@count=$$((count+1)); \
+		count=$$((count+1)); \
 		if [ $$count -gt 30 ]; then \
 			echo "❌ PostgreSQL falhou em iniciar após 30 segundos."; \
 			echo "Verifique o .env e os logs: '$(DC) logs psql'"; \
@@ -119,8 +118,8 @@ docker-deps-up:
 		fi; \
 		echo "  (tentativa $$count/30) Aguardando..."; \
 		sleep 1; \
-	done
-	@echo "✅ PostgreSQL está pronto para conexões!"
+	done; \
+	echo "✅ PostgreSQL está pronto para conexões!"
 
 
 # --- Comandos Docker Refatorados ---
