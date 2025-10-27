@@ -80,7 +80,7 @@ run-docker:
 
 run-test: venv
 	@set -o allexport; if [ -f $(ENV_FILE) ]; then . $(ENV_FILE); fi; set +o allexport; \
-	$(VVENV)/bin/pytest -q
+	$(VENV)/bin/pytest -q
 
 clean:
 	rm -rf $(VENV)

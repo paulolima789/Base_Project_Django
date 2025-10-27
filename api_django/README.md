@@ -70,14 +70,12 @@ Users (CRUD)
 - PATCH /api/users/{pk}/update/         — Atualizar parcialmente (se implementado)
 - DELETE /api/users/{pk}/delete/        — Deletar usuário (UserDeleteView)
 
-Groups (CRUD) — observação de conflito no código
-- Intenção esperada:
-  - GET   /api/groups/                  — Listar grupos (GroupListView)
-  - POST  /api/groups/create/           — Criar grupo (GroupCreateView)
-  - GET   /api/groups/{pk}/             — Detalhar grupo (GroupDetailView)
-  - PUT   /api/groups/{pk}/update/      — Atualizar grupo (GroupUpdateView)
-  - DELETE /api/groups/{pk}/delete/     — Deletar grupo (GroupDeleteView)
-- Observação: no arquivo api/urls.py há caminhos duplicados para `groups/` e `groups/<int:pk>/` — isso causa conflito (apenas a primeira rota definida será usada). Recomenda-se ajustar as rotas de criação/atualização/remoção para caminhos distintos (ex.: `groups/create/`, `groups/<int:pk>/update/`, `groups/<int:pk>/delete/`) como feito para `examples` e `users`.
+Groups (CRUD)
+- GET   /api/groups/                  — Listar grupos (GroupListView)
+- POST  /api/groups/create/           — Criar grupo (GroupCreateView)
+- GET   /api/groups/{pk}/             — Detalhar grupo (GroupDetailView)
+- PUT   /api/groups/{pk}/update/      — Atualizar grupo (GroupUpdateView)
+- DELETE /api/groups/{pk}/delete/     — Deletar grupo (GroupDeleteView)
 
 > Observações:
 > - Os métodos exatos suportados (PUT vs PATCH, etc.) dependem da implementação das views; acima são inferências padrão com base nos nomes das views.
